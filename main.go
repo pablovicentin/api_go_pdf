@@ -34,6 +34,11 @@ type DataBody struct {
 	IvaComision       string `json:"iva_comision"`
 	RetIva            string `json:"ret_iva"`
 }
+type DataFooter struct {
+	RecuperoComisiones string `json:"recupero_comisiones"`
+	IvaRecupero        string `json:"iva_recupero"`
+	Totales            string `json:"totales"`
+}
 
 func buildHeading(m pdf.Maroto, emisor, receptor Actor, fechas Fechas, fileName string) {
 	m.RegisterHeader(func() {
@@ -296,16 +301,31 @@ func buildContent(m pdf.Maroto, contents []DataBody) {
 
 		// m.Row(10, func() { m.Text("") })
 	}
-
 }
 
-func getTealColor() color.Color {
-	return color.Color{
-		Red:   3,
-		Green: 166,
-		Blue:  166,
-	}
+func buildFooter(m pdf.Maroto, dataFooter DataFooter) {
+
+	m.RegisterFooter(func() {
+
+		m.Row(7, func() {
+			m.Col(12, func() {
+				m.Text("Recupero Comisiones Bancarias: "+dataFooter.RecuperoComisiones, props.Text{Align: consts.Left, Left: 2, Size: 8, Top: 13})
+			})
+		})
+		m.Row(7, func() {
+			m.Col(12, func() {
+				m.Text("IVA Recupero Com Bancarias: "+dataFooter.IvaRecupero, props.Text{Align: consts.Left, Left: 2, Size: 8, Top: 16})
+			})
+		})
+		m.Row(7, func() {
+			m.Col(12, func() {
+				m.Text("Totales: "+dataFooter.Totales, props.Text{Align: consts.Left, Left: 2, Size: 8, Top: 19})
+			})
+		})
+
+	})
 }
+
 func getDarkGrayColor() color.Color {
 	return color.Color{
 		Red:   51,
@@ -367,6 +387,18 @@ func main() {
 
 	// contenido
 	buildContent(m, contents)
+
+	m.Line(1)
+
+	/************* Footer  *************/
+
+	var dataFooter DataFooter
+	dataFooter.RecuperoComisiones = "200"
+	dataFooter.IvaRecupero = "21"
+	dataFooter.Totales = "221"
+
+	// pie de informe
+	buildFooter(m, dataFooter)
 
 	// crear archivo en la carpeta pdfs
 	err := m.OutputFileAndClose("pdfs/div_rhino_fruit.pdf")
