@@ -233,49 +233,70 @@ func buildContent(m pdf.Maroto, contents []DataBody) {
 
 	// tableHeadings := []string{"Fruit", "Description", "Price"}
 	// contents := [][]string{{"Apple", "Red and juicy", "2.00"}, {"Orange", "Orange and juicy", "3.00"}}
+	for _, data := range contents {
 
-	m.Line(2)
-	m.Row(5, func() {
-		m.Col(12, func() {
-			m.Text("Canal de Pago 1 ", props.Text{Align: consts.Left, Left: 5})
+		m.Line(2)
+		m.Row(5, func() {
+			m.Col(12, func() {
+				m.Text(data.ChannelName, props.Text{Align: consts.Left, Left: 5})
+			})
 		})
-	})
-	m.Line(2)
+		m.Line(2)
 
-	m.SetBorder(true)
+		// m.SetBorder(true)
 
-	m.Row(7, func() {
-		m.Col(12, func() {
-			m.Text("Importe Cobrado: ", props.Text{Align: consts.Left, Left: 2})
+		m.Row(7, func() {
+			m.Col(3, func() {
+				m.Text("Importe Cobrado: ", props.Text{Align: consts.Left, Left: 2, Size: 8})
+			})
+			m.Col(9, func() {
+				m.Text(data.ImporteCobrado, props.Text{Align: consts.Left, Left: 2, Size: 8})
+			})
 		})
-	})
-	m.Row(7, func() {
-		m.Col(12, func() {
-			m.Text("Importe Depositado: ", props.Text{Align: consts.Left, Left: 2})
+		m.Row(7, func() {
+			m.Col(3, func() {
+				m.Text("Importe Depositado: ", props.Text{Align: consts.Left, Left: 2, Size: 8})
+			})
+			m.Col(9, func() {
+				m.Text(data.ImporteDepositado, props.Text{Align: consts.Left, Left: 2, Size: 8})
+			})
 		})
-	})
-	m.Row(7, func() {
-		m.Col(12, func() {
-			m.Text("Cantidad Boletas: ", props.Text{Align: consts.Left, Left: 2})
+		m.Row(7, func() {
+			m.Col(3, func() {
+				m.Text("Cantidad Boletas: ", props.Text{Align: consts.Left, Left: 2, Size: 8})
+			})
+			m.Col(9, func() {
+				m.Text(data.CantidadBoletas, props.Text{Align: consts.Left, Left: 2, Size: 8})
+			})
 		})
-	})
-	m.Row(7, func() {
-		m.Col(12, func() {
-			m.Text("Comisiones: ", props.Text{Align: consts.Left, Left: 2})
+		m.Row(7, func() {
+			m.Col(3, func() {
+				m.Text("Comisiones: ", props.Text{Align: consts.Left, Left: 2, Size: 8})
+			})
+			m.Col(9, func() {
+				m.Text(data.Comisiones, props.Text{Align: consts.Left, Left: 2, Size: 8})
+			})
 		})
-	})
-	m.Row(7, func() {
-		m.Col(12, func() {
-			m.Text("IVA Comisión: ", props.Text{Align: consts.Left, Left: 2})
+		m.Row(7, func() {
+			m.Col(3, func() {
+				m.Text("IVA Comisión: ", props.Text{Align: consts.Left, Left: 2, Size: 8})
+			})
+			m.Col(9, func() {
+				m.Text(data.IvaComision, props.Text{Align: consts.Left, Left: 2, Size: 8})
+			})
 		})
-	})
-	m.Row(7, func() {
-		m.Col(12, func() {
-			m.Text("Ret IVA 3130: ", props.Text{Align: consts.Left, Left: 2})
+		m.Row(7, func() {
+			m.Col(3, func() {
+				m.Text("Ret IVA 3130: ", props.Text{Align: consts.Left, Left: 2, Size: 8})
+			})
+			m.Col(9, func() {
+				m.Text(data.RetIva, props.Text{Align: consts.Left, Left: 2, Size: 8})
+			})
 		})
-	})
 
-	m.Row(10, func() { m.Text("") })
+		// m.Row(10, func() { m.Text("") })
+	}
+
 }
 
 func getTealColor() color.Color {
@@ -297,6 +318,7 @@ func main() {
 	m := pdf.NewMaroto(consts.Portrait, consts.A4)
 	m.SetPageMargins(20, 10, 20)
 
+	/************* Cabecera  *************/
 	var emisor, receptor Actor
 	var fechas Fechas
 
@@ -320,6 +342,28 @@ func main() {
 
 	// encabezdo
 	buildHeading(m, emisor, receptor, fechas, fileName)
+
+	/************* Cuerpo *************/
+	var data, data2 DataBody
+	var contents []DataBody
+
+	data.ChannelName = "Canal de Pago 1"
+	data.ImporteCobrado = "100"
+	data.ImporteDepositado = "100"
+	data.CantidadBoletas = "10"
+	data.Comisiones = "5"
+	data.IvaComision = "6"
+	data.RetIva = "3"
+
+	data2.ChannelName = "Canal de Pago 2"
+	data2.ImporteCobrado = "100"
+	data2.ImporteDepositado = "100"
+	data2.CantidadBoletas = "10"
+	data2.Comisiones = "5"
+	data2.IvaComision = "6"
+	data2.RetIva = "3"
+
+	contents = append(contents, data, data2)
 
 	// contenido
 	buildContent(m, contents)
