@@ -243,7 +243,7 @@ func buildContent(m pdf.Maroto, contents []DataBody) {
 		m.Line(2)
 		m.Row(5, func() {
 			m.Col(12, func() {
-				m.Text(data.ChannelName, props.Text{Align: consts.Left, Left: 5})
+				m.Text("Medio de Pago: "+data.ChannelName, props.Text{Align: consts.Left, Left: 5})
 			})
 		})
 		m.Line(2)
@@ -367,7 +367,7 @@ func main() {
 	var data, data2 DataBody
 	var contents []DataBody
 
-	data.ChannelName = "Canal de Pago 1"
+	data.ChannelName = "Debito"
 	data.ImporteCobrado = "100"
 	data.ImporteDepositado = "100"
 	data.CantidadBoletas = "10"
@@ -375,7 +375,7 @@ func main() {
 	data.IvaComision = "6"
 	data.RetIva = "3"
 
-	data2.ChannelName = "Canal de Pago 2"
+	data2.ChannelName = "Debin"
 	data2.ImporteCobrado = "100"
 	data2.ImporteDepositado = "100"
 	data2.CantidadBoletas = "10"
