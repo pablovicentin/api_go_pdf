@@ -1,0 +1,87 @@
+[
+  {
+    "Cuenta": "CUENTA PRUEBA",
+    "Id": "15716",
+    "MedioPago": "VISA",
+    "Monto": "-1000",
+    "PagoRevertido": {
+      "IdPago": "56",
+      "PagoEstado": "REVERTED",
+      "ReferenciaExterna": "15716",
+      "Items": [
+        {
+          "IdItems": "65",
+          "Cantidad": "1",
+          "Descripcion": "audio0",
+          "Monto": "1000",
+          "Identificador": ""
+        }
+      ],
+      "IntentoPago": {
+        "IdIntentoPago": "28",
+        "IdTransaccion": "23615dc0-f79f-4855-a2ca-67c6ac4184d4",
+        "FechaPago": "2022-08-05 11:53:00 +0000 UTC",
+        "ImportePagado": "1000"
+      }
+    }
+  },
+  {
+    "Cuenta": "CUENTA PRUEBA",
+    "Id": "15716",
+    "MedioPago": "VISA",
+    "Monto": "-2246",
+    "PagoRevertido": {
+      "IdPago": "82",
+      "PagoEstado": "REVERTED",
+      "ReferenciaExterna": "15716",
+      "Items": [
+        {
+          "IdItems": "125",
+          "Cantidad": "1",
+          "Descripcion": "audio0",
+          "Monto": "2000",
+          "Identificador": ""
+        }
+      ],
+      "IntentoPago": {
+        "IdIntentoPago": "38",
+        "IdTransaccion": "c28e1f3e-8e35-4380-bb54-7f45bb606a26",
+        "FechaPago": "2022-08-09 15:25:00 +0000 UTC",
+        "ImportePagado": "2000"
+      }
+    }
+  },
+  {
+    "Cuenta": "CUENTA PRUEBA",
+    "Id": "25737",
+    "MedioPago": "VISA",
+    "Monto": "-1136",
+    "PagoRevertido": {
+      "IdPago": "215",
+      "PagoEstado": "REVERTED",
+      "ReferenciaExterna": "25737",
+      "Items": [
+        {
+          "IdItems": "294",
+          "Cantidad": "1",
+          "Descripcion": "Pago de impuesto al sello",
+          "Monto": "500",
+          "Identificador": ""
+        },
+        {
+          "IdItems": "295",
+          "Cantidad": "1",
+          "Descripcion": "Pago de impuesto al sello",
+          "Monto": "500",
+          "Identificador": ""
+        }
+      ],
+      "IntentoPago": {
+        "IdIntentoPago": "66",
+        "IdTransaccion": "4cfe600f-9c3c-48e9-b842-51974e2a76c9",
+        "FechaPago": "2022-09-15 10:36:00 +0000 UTC",
+        "ImportePagado": "1000"
+      }
+    }
+  }
+]
