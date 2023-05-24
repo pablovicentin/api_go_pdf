@@ -149,25 +149,20 @@ func buildBodyList(m pdf.Maroto) {
 		},
 		VerticalContentPadding: 7, // alto de fila
 	})
-
 }
 
 func buildFooter(m pdf.Maroto) {
-
 	m.RegisterFooter(func() {
-
 		m.Row(50, func() {
 			m.Col(12, func() {
 				err := m.FileImage("images/footer_recibo.png", props.Rect{
 					Top: 30,
 				})
-
 				if err != nil {
 					fmt.Println("la imagen no se pudo cargar", err)
 				}
 			})
 		})
-
 	})
 }
 
