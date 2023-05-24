@@ -13,83 +13,68 @@ import (
 	"github.com/johnfercher/maroto/pkg/props"
 )
 
-// func getHeader() []string {
-// 	return []string{"", "Producto", "Cantidad", "Precio"}
-// }
+/* COLORES */
+func getTelCoSoftBlueColor() color.Color {
+	return color.Color{
+		Red:   0,
+		Green: 184,
+		Blue:  241,
+	}
+}
 
-// func formatFechaString(fecha time.Time, formatoFecha string) string {
-// 	fechaStr := fecha.Format(formatoFecha)
-// 	fechaArrayStr := strings.Split(fechaStr[0:10], "-")
-// 	fechaVto := fmt.Sprintf("%v-%v-%v", fechaArrayStr[2], fechaArrayStr[1], fechaArrayStr[0])
-// 	return fechaVto
-// }
+func getHeaderTextColor() color.Color {
+	return color.NewBlack()
+}
 
-// func getContents(pagoItems *[]entities.Pagoitems) [][]string {
-// 	size := len(*pagoItems)
-// 	items := make([][]string, size)
-// 	for i, x := range *pagoItems {
-// 		identificador := ""
+func getTelCoGreenColor() color.Color {
+	return color.Color{
+		Red:   195,
+		Green: 216,
+		Blue:  46,
+	}
+}
 
-// 		if x.Identifier != "" {
-// 			identificador = x.Identifier
-// 		}
+/* OTRAS FUNCIONES */
 
-// 		items[i] = []string{
-// 			identificador, x.Description, fmt.Sprint(x.Quantity), strconv.FormatFloat(x.Amount.Float64(), 'f', 2, 64),
-// 		}
+// size dinamico segun long del texto que se recibe
+func _resolveColumnWidthSize(texto string) (colSize, colSpaceSize int) {
+	long := len(texto)
+	var columMaxSize int = 12
+	switch {
+	case long <= 30:
+		colSize = 3
+		colSpaceSize = columMaxSize - colSize
+	case long > 30 && long < 43:
+		colSize = 4
+		colSpaceSize = columMaxSize - colSize
+	case long >= 43:
+		colSize = 5
+		colSpaceSize = columMaxSize - colSize
+	default:
+		colSize = 4
+		colSpaceSize = columMaxSize - colSize
+	}
+	return
+}
 
-// 		// items[i] = []string{
-// 		// 	"", x.Description, fmt.Sprint(x.Quantity), strconv.FormatFloat(x.Amount.Float64(), 'f', 2, 64),
-// 		// }
-// 	}
-// 	return items
-// }
+func getHeaderAndContent() (header []string, contents [][]string) {
+	header = []string{"Transacción", "Producto", "Cantidad", "Precio"}
 
-// func getDarkGrayColor() color.Color {
-// 	return color.Color{
-// 		Red:   55,
-// 		Green: 55,
-// 		Blue:  55,
-// 	}
-// }
+	contents = [][]string{}
 
-// func getGrayColor() color.Color {
-// 	return color.Color{
-// 		Red:   200,
-// 		Green: 200,
-// 		Blue:  200,
-// 	}
-// }
+	contents = append(contents, []string{"389000786014502301031003026613", "30206226", "1", "3026.61"})
+	contents = append(contents, []string{"389000786014502301031003012345", "12345678", "1", "1245.65"})
 
-// func getBlackColor() color.Color {
-// 	return color.Color{
-// 		Red:   0,
-// 		Green: 0,
-// 		Blue:  0,
-// 	}
-// }
-// func getColorWeePrimary() color.Color {
-// 	return color.Color{
-// 		Red:   000,
-// 		Green: 156,
-// 		Blue:  222,
-// 	}
-// }
+	return header, contents
+}
 
-// func getColorWeeSecondary() color.Color {
-// 	return color.Color{
-// 		Red:   149,
-// 		Green: 201,
-// 		Blue:  223,
-// 	}
-// }
+/* FUNCIONES DE ARMADO PRINCIPAL */
 
 func buildHeading(m pdf.Maroto) {
 	green := getTelCoGreenColor()
 	negro := getHeaderTextColor()
 	blanco := color.NewWhite()
 
-	fmt.Print(green)
 	// RegisterHeader
 	m.RegisterHeader(func() {
 		m.Row(50, func() {
@@ -121,82 +106,86 @@ func buildHeading(m pdf.Maroto) {
 			})
 		})
 		m.SetBackgroundColor(blanco)
-
 	})
+}
+
+func buildBodyList(m pdf.Maroto) {
+	celeste := getTelCoSoftBlueColor()
+	blanco := color.NewWhite()
+	header, contents := getHeaderAndContent()
 
 	m.Row(10, func() {
 		m.Col(12, func() {
 			m.Text("Verás este pago en tu resumen como TelCo Wee!!", props.Text{
-				Top:   3,
+				Top:   5,
 				Style: consts.Italic,
 				Align: consts.Center,
-				Color: negro,
+				Color: color.NewBlack(),
 			})
 		})
 	})
+	m.Line(5, props.Line{
+		Color: blanco,
+	})
+	m.SetBackgroundColor(celeste)
+
+	m.TableList(header, contents, props.TableList{
+		HeaderProp: props.TableListContent{
+			GridSizes: []uint{3, 4, 2, 3},
+			Size:      10,
+			Style:     consts.Bold,
+			Color:     blanco,
+		},
+		ContentProp: props.TableListContent{
+			Size:      8,
+			GridSizes: []uint{3, 4, 2, 3},
+		},
+		Align:                consts.Center,
+		HeaderContentSpace:   1,
+		AlternatedBackground: &blanco,
+		Line:                 true,
+		LineProp: props.Line{
+			Color: celeste,
+		},
+		VerticalContentPadding: 7, // alto de fila
+	})
+
 }
 
-/* COLORES */
-func getDarkGrayColor() color.Color {
-	return color.Color{
-		Red:   55,
-		Green: 55,
-		Blue:  55,
-	}
-}
+func buildFooter(m pdf.Maroto) {
 
-func getWhiteColor() color.Color {
-	return color.NewWhite()
-}
+	m.RegisterFooter(func() {
 
-func getLightPurpleColor() color.Color {
-	return color.Color{
-		Red:   210,
-		Green: 200,
-		Blue:  230,
-	}
-}
+		m.Row(50, func() {
+			m.Col(12, func() {
+				err := m.FileImage("images/footer_recibo.png", props.Rect{
+					Top: 30,
+				})
 
-func getHeaderTextColor() color.Color {
-	return color.NewBlack()
-}
+				if err != nil {
+					fmt.Println("la imagen no se pudo cargar", err)
+				}
+			})
+		})
 
-func getTelCoGreenColor() color.Color {
-	return color.Color{
-		Red:   195,
-		Green: 216,
-		Blue:  46,
-	}
-}
-
-// size dinamico segun long del texto que se recibe
-func _resolveColumnWidthSize(texto string) (colSize, colSpaceSize int) {
-	long := len(texto)
-	var columMaxSize int = 12
-	switch {
-	case long <= 30:
-		colSize = 3
-		colSpaceSize = columMaxSize - colSize
-	case long > 30 && long < 43:
-		colSize = 4
-		colSpaceSize = columMaxSize - colSize
-	case long >= 43:
-		colSize = 5
-		colSpaceSize = columMaxSize - colSize
-	default:
-		colSize = 4
-		colSpaceSize = columMaxSize - colSize
-	}
-	return
+	})
 }
 
 func main() {
 
 	m := pdf.NewMaroto(consts.Portrait, consts.A4)
+
 	m.SetPageMargins(0, 0, 0)
 
 	buildHeading(m)
-	// buildFruitList(m)
+
+	m.SetPageMargins(10, 0, 10)
+
+	buildBodyList(m)
+
+	m.SetPageMargins(0, 0, 0)
+
+	buildFooter(m)
 
 	ahora := time.Now().Local().Unix()
 	ahoraS := strconv.Itoa(int(ahora))
